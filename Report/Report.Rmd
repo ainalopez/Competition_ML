@@ -1,0 +1,23 @@
+---
+title: "Report - Kaggle Competition"
+author: "ABBA"
+date: "February 8, 2016"
+output: pdf_document
+---
+
+
+#Introduction
+
+
+#Text mining variables
+
+
+
+#Variable Selection: RFF
+
+
+
+#Models 
+
+
+#Results

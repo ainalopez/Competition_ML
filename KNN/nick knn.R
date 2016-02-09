@@ -49,7 +49,7 @@ kNN <- function(features, labels, test, k, p){
   neighbors <- get_neighbors(order_dist, k=k)
   label_matrix <- get_label_matrix(neighbors, labels)
   predictLabels <- get_majority_vote(label_matrix)
-  return(predLabels=predictLabels)
+  return(predictLabels)
 }
 
 train <- read.csv("news_popularity_training.csv")
@@ -60,7 +60,7 @@ features <- train[c(-2,-62)]
 labels <- train$popularity
 
 # Choose k using 4-Fold Cross Validation
-k <- rep(seq(1,61,2))
+k <- rep(seq(1,71,4))
 lk <- length(k)
 
 # 4 fold Cross-Validation

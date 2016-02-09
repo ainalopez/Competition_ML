@@ -60,8 +60,7 @@ features <- train[c(-2,-62)]
 labels <- train$popularity
 
 # Choose k using 4-Fold Cross Validation
-#k <- rep(seq(1,61,2))
-k <- rep(seq(1,3,2))
+k <- rep(seq(1,61,2))
 lk <- length(k)
 
 # 4 fold Cross-Validation

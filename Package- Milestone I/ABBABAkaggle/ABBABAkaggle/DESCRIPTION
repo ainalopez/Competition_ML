@@ -1,0 +1,13 @@
+Package: ABBABAkaggle
+Title: Kaggle Competition Scripts
+Version: 0.0.0.9000
+Authors@R: c( person("Nicholas", "Halliwell", email = "nicholas.halliwell@barcelonagse.eu", role = c("aut", "cre", "cph")),
+		person("Aina", "Lopez", email = "aina.lopez@barcelonagse.eu", role = c("aut", "ctb","cph")), 
+		person("Yaroslav", "Marchuk", email = "yaroslav.marchuk@barcelonagse.eu", role = c("aut", "ctb", "cph")))
+Description: Implementation of the algorithm that produced the best performance in the Kaggle competition of the team ABBABA OH NO ABBBAB. 
+Depends:
+    R (>= 3.2.2)
+License: MIT + file LICENSE
+Date: 2016-02-10
+LazyData: true
+RoxygenNote: 5.0.1

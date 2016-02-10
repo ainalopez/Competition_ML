@@ -18,7 +18,7 @@
 #' # Given a training and a test set
 #' bestABBABA(training, test)
 
-
+#
 
 
 bestABBABA <- function(data, test, file = FALSE, seed=111){

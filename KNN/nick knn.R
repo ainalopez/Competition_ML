@@ -82,7 +82,7 @@ for (h in 1:lk){
 
 k_max <- k[which.max(acc)]
 
-prediction <- kNN(features, labels, test, k_max, p)
+prediction <- kNN(features, labels, test, k_max, 2)
 
 solution <- data.frame(Id = test$id, Popularity = prediction)
 save_csv(solution)

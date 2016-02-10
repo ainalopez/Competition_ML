@@ -54,9 +54,7 @@ textvars<-textvars[,-which(colnames(textvars)=='for')]
 words<-colnames(textvars)
 
 #remove 2's from the matrix to have binary variables
-for( i in 1:dim(textvars)[2]){
-  textvars[,i]<-ifelse(textvars[,i]>1, 1, textvars[,i])
-}
+textvars<-ifelse(textvars>0,1,0)
 
 #data$TM<-apply(textvars,1,sum)
 textvars<-apply(textvars, 2, as.factor)
@@ -78,9 +76,7 @@ test.textvars<-inspect(dtm[,words])
 #test$TM<-apply(textvars,1,sum)
 
 #remove 2's amd 3's
-for( i in 1:dim(test.textvars)[2]){
-  test.textvars[,i]<-ifelse(test.textvars[,i]>1, 1, test.textvars[,i])
-}
+textvars<-ifelse(textvars>0,1,0)
 
 test.textvars<-apply(test.textvars, 2, as.factor)
 

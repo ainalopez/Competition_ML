@@ -5,8 +5,8 @@
 #' 
 #' multi-class classifier that predicts the labels for the test data set using a random forest. 
 #'
-#' @param data Matrix consisting of the training data, where the labels are included in the matrix
-#' @param test Matrix consisting of the test data. 
+#' @param data Matrix or data frame consisting of the training data, where the labels are included in the matrix/data frame
+#' @param test Matrix or data frame consisting of the test data. 
 #' @param file Logical, set to TRUE if you want to create a csv file with the Id's and corresponding predicted classes, by deafult set to FALSE.
 #' @param seed Integer, set to 111 by default. 
 #' @return A dataframe with following elements: Id, predicted class.
@@ -15,10 +15,13 @@
 #' @import randomForest 
 #' @export
 #' @examples
-#' # Given a training and a test set
-#' bestABBABA(training, test)
-
-#
+#' #Generate data
+#' training <- matrix(rnorm(200),ncol=2)
+#' test <- matrix(rnorm(200),ncol=2)
+#' labels <- c(rep(0,50),rep(1,50))
+#' data <- cbind(training, labels)
+#' #Run random forest
+#' bestABBABA(training, test, file=FALSE, seed=666)
 
 
 bestABBABA <- function(data, test, file = FALSE, seed=111){
@@ -33,8 +36,6 @@ bestABBABA <- function(data, test, file = FALSE, seed=111){
   not_empty(test)
   assert_that(is.logical(file))
   assert_that(is.count(seed))
-  assert_that(is.matrix(data))
-  assert_that(is.matrix(test))
   
   #set seed
   set.seed(seed)

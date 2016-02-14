@@ -118,7 +118,7 @@ bestABBABA <- function(data, test, file = FALSE, seed=111){
 
   # Predict test data
   prediction <- predict(forest, testing)
-  solution   <- data.frame(Id = test$id, popularity = as.numeric(prediction2))
+  solution   <- data.frame(Id = test$id, popularity = as.numeric(prediction))
   
   # Write csv
   if(file){

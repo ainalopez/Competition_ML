@@ -23,6 +23,6 @@ multi-class classifier that predicts the labels for the test data set using a ra
 }
 \examples{
 #Run random forest
-bestABBABA(training, test, file=FALSE, seed=666)
+bestABBABA(training, test)
 }
 

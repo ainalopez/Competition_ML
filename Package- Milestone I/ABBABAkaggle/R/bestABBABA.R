@@ -16,16 +16,11 @@
 #' @export
 #' @examples
 #' #Run random forest
-#' bestABBABA(training, test, file=FALSE, seed=666)
+#' bestABBABA(training, test)
 
 
 bestABBABA <- function(data, test, file = FALSE, seed=111){
 
-  # Load libraries
-  #if (!require("assertthat")) install.packages("assertthat"); library(assertthat)
-  #if (!require("tm")) install.packages("tm"); library(tm)
-  #if (!require("randomForest")) install.packages("randomForest"); library(randomForest)
-  
   # Check the Input
   not_empty(data)
   not_empty(test)
@@ -40,22 +35,23 @@ bestABBABA <- function(data, test, file = FALSE, seed=111){
   data$Year         <- substr(data$url,21,24)
   data$Month        <- substr(data$url,26,27)
   data$day_of_month <- substr(data$url,29,30)
+  
 
   # title
   get.title<-function(data){
-    title <- sapply(1:length(data$url), function(i) {
+    
+    title<-sapply(1:length(data$url), function(i) {
       substr(data$url[i],32, nchar(as.character(data$url[i]))-1)})
     
     text.input <- as.factor(as.character(title))
     text.input <- gsub("-", " ", text.input)
-    
     return(text.input)
   }
 
   text.input <- get.title(data)
 
   # text variables
-  text.variables<-function(text.input, minimum){
+  text.variables <- function(text.input, minimum){
     docs <- Corpus(VectorSource(text.input))
     dtm  <- DocumentTermMatrix(docs, control=list(bounds = list(global = c(minimum,Inf))))
     
@@ -72,7 +68,9 @@ bestABBABA <- function(data, test, file = FALSE, seed=111){
   words <- colnames(textvars)
   
   #remove 2's from the matrix to have binary variables
-  textvars<-ifelse(textvars>0,1,0)
+  for( i in 1:dim(textvars)[2]){
+    textvars[,i]<-ifelse(textvars[,i]>1, 1, textvars[,i])
+  }
   
   textvars <- apply(textvars, 2, as.factor)
   train    <- cbind(data[, -2], textvars)
@@ -88,10 +86,12 @@ bestABBABA <- function(data, test, file = FALSE, seed=111){
   test.input    <- get.title(test)
   docs          <- Corpus(VectorSource(test.input))
   dtm           <- DocumentTermMatrix(docs, control=list(bounds = list(global = c(0,Inf))))
-  test.textvars <- dtm[,words]
+  test.textvars <- inspect(dtm[,words])
   
   #remove 2's amd 3's
-  textvars<-ifelse(textvars>0,1,0)
+  for( i in 1:dim(test.textvars)[2]){
+    test.textvars[,i]<-ifelse(test.textvars[,i]>1, 1, test.textvars[,i])
+  }
   
   test.textvars <- apply(test.textvars, 2, as.factor)
   testing <- cbind(test[,-2],test.textvars)
@@ -108,7 +108,8 @@ bestABBABA <- function(data, test, file = FALSE, seed=111){
   forest <- randomForest(factor(popularity) ~ . , 
                        data=training.rv, 
                        replace = FALSE,
-                       importance = TRUE, ntree = 800)
+                       importance = TRUE, 
+                       ntree = 800)
 
   # Predict test data
   prediction <- predict(forest, testing)

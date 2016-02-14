@@ -15,11 +15,6 @@
 #' @import randomForest 
 #' @export
 #' @examples
-#' #Generate data
-#' training <- matrix(rnorm(200),ncol=2)
-#' test <- matrix(rnorm(200),ncol=2)
-#' labels <- c(rep(0,50),rep(1,50))
-#' data <- cbind(training, labels)
 #' #Run random forest
 #' bestABBABA(training, test, file=FALSE, seed=666)
 
@@ -27,9 +22,9 @@
 bestABBABA <- function(data, test, file = FALSE, seed=111){
 
   # Load libraries
-  if (!require("assertthat")) install.packages("assertthat"); library(assertthat)
-  if (!require("tm")) install.packages("tm"); library(tm)
-  if (!require("randomForest")) install.packages("randomForest"); library(randomForest)
+  #if (!require("assertthat")) install.packages("assertthat"); library(assertthat)
+  #if (!require("tm")) install.packages("tm"); library(tm)
+  #if (!require("randomForest")) install.packages("randomForest"); library(randomForest)
   
   # Check the Input
   not_empty(data)
@@ -93,7 +88,7 @@ bestABBABA <- function(data, test, file = FALSE, seed=111){
   test.input    <- get.title(test)
   docs          <- Corpus(VectorSource(test.input))
   dtm           <- DocumentTermMatrix(docs, control=list(bounds = list(global = c(0,Inf))))
-  test.textvars <- inspect(dtm[,words])
+  test.textvars <- dtm[,words]
   
   #remove 2's amd 3's
   textvars<-ifelse(textvars>0,1,0)

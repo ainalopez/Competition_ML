@@ -4,14 +4,16 @@
 \alias{bestABBABA}
 \title{Random Forest classifier}
 \usage{
-bestABBABA(data, test, file = FALSE)
+bestABBABA(data, test, file = FALSE, seed = 111)
 }
 \arguments{
-\item{data}{BLABLABLA.}
+\item{data}{Matrix or data frame consisting of the training data, where the labels are included in the matrix/data frame}
 
-\item{test}{BLABLABLA.}
+\item{test}{Matrix or data frame consisting of the test data.}
 
 \item{file}{Logical, set to TRUE if you want to create a csv file with the Id's and corresponding predicted classes, by deafult set to FALSE.}
+
+\item{seed}{Integer, set to 111 by default.}
 }
 \value{
 A dataframe with following elements: Id, predicted class.
@@ -20,7 +22,7 @@ A dataframe with following elements: Id, predicted class.
 multi-class classifier that predicts the labels for the test data set using a random forest.
 }
 \examples{
-# Given a training and a test set
-bestABBABA(training, test)
+#Run random forest
+bestABBABA(training, test, file=FALSE, seed=666)
 }
 

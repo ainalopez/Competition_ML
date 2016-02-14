@@ -22,9 +22,9 @@
 bestABBABA <- function(data, test, file = FALSE, seed=111){
 
   # Load libraries
-  #if (!require("assertthat")) install.packages("assertthat"); library(assertthat)
-  #if (!require("tm")) install.packages("tm"); library(tm)
-  #if (!require("randomForest")) install.packages("randomForest"); library(randomForest)
+  if (!require("assertthat")) install.packages("assertthat"); library(assertthat)
+  if (!require("tm")) install.packages("tm"); library(tm)
+  if (!require("randomForest")) install.packages("randomForest"); library(randomForest)
   
   # Check the Input
   not_empty(data)

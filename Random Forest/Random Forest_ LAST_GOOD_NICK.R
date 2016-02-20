@@ -113,8 +113,7 @@ df <- as.data.frame(mtry)
 mtry <- df[which.min(df$OOBError),1]
 #########################################################
 
-#nodesize <- nrow(training.p11) * (0.001)
-nodesize <- 50
+nodesize <- nrow(training.p11) * (0.001)
 
 forest <- randomForest(factor(popularity) ~ . ,mtry=mtry, nodesize=nodesize,
                        data=training.p11,replace = FALSE, 

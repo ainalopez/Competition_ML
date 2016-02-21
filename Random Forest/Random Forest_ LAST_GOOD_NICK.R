@@ -108,9 +108,10 @@ label <- training.p11$popularity
 #####Tune mtry#####
 #####I used ntreeTry=800 and ntreeTry=300, results were similar
 #################THIS CODE TAKES FOREVER#################
-mtry <- tuneRF(training_new, label,ntreeTry = 500, plot=TRUE)
-df <- as.data.frame(mtry)
-mtry <- df[which.min(df$OOBError),1]
+#mtry <- tuneRF(training_new, label,ntreeTry = 500, plot=TRUE)
+#df <- as.data.frame(mtry)
+#mtry <- df[which.min(df$OOBError),1]
+mtry <- 10
 #########################################################
 
 nodesize <- nrow(training.p11) * (0.001)

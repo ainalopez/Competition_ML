@@ -1,5 +1,6 @@
 setwd("~/Desktop")
 library(tm)
+library(mombf)
 set.seed(111)
 
 # Load data
@@ -93,7 +94,6 @@ library(randomForest)
 
 training.p11<- train[c(1,2,3,4,5,7,8,9,10,11,12,13,14,15,17,18,21,22,23,25,26,27,28,29,30,31,32,33,34,35,36,38,39,40,41,42,43,44,45,46,47,48,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,76)]
 #training.p11<- train[c(1,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,18,19,21,22,23,24,25 ,26,27,28,29,30.31,32,33,34,35,36,38,39,40,41,42,43,44,45,46,47,48,50,51,52,53,54,55,56,57,58,59,60,61,62,63,68,85,117)]
-
 # CHOOSE VARIABLES
 #forest <- RRF(factor(popularity) ~ . , 
 #                       data=training.p11, 
@@ -102,22 +102,29 @@ training.p11<- train[c(1,2,3,4,5,7,8,9,10,11,12,13,14,15,17,18,21,22,23,25,26,27
 #                       #cutoff=c(0.125, 0.125, 0.20, 0.25, 0.3),
 #                       replace = FALSE,
 #                       importance = TRUE, ntree = 300)
-training_new <- training.p11[,-54]
+#training_new <- training.p11[,-54]
 label <- training.p11$popularity
+nick_data <- apply(training.p11, 2, as.numeric)
+nick_data <- nick_data[,-54]
+model <- modelSelection(y=label, x=nick_data,
+                        priorCoef = zellnerprior(tau = nrow(nick_data)))
 
+pp <- postProb(model)
+
+bayes_data <- train[c(4,7,8,11,12,14,15,16,17,18,20,21,22,23,26,27,31,33,34,36,39,45,50,52,55)]
 #####Tune mtry#####
 #####I used ntreeTry=800 and ntreeTry=300, results were similar
 #################THIS CODE TAKES FOREVER#################
-#mtry <- tuneRF(training_new, label,ntreeTry = 500, plot=TRUE)
-#df <- as.data.frame(mtry)
-#mtry <- df[which.min(df$OOBError),1]
-mtry <- 10
+mtry <- tuneRF(bayes_data, label,ntreeTry = 500, plot=TRUE)
+df <- as.data.frame(mtry)
+mtry <- df[which.min(df$OOBError),1]
+mtry <- 4
 #########################################################
 
-nodesize <- nrow(training.p11) * (0.001)
+nodesize <- nrow(bayes_data) * (0.001)
 
-forest <- randomForest(factor(popularity) ~ . ,mtry=mtry, nodesize=nodesize,
-                       data=training.p11,replace = FALSE, 
+forest <- randomForest(factor(label) ~ . ,mtry=mtry, nodesize=nodesize,
+                       data=bayes_data,replace = FALSE, 
                        importance = TRUE, ntree = 800)
 
 forest
@@ -126,5 +133,5 @@ forest
 prediction2 <- predict(forest, testing)
 
 solution <- data.frame(Id = test$id, popularity = as.numeric(prediction2))
-write.csv(solution, file = "predictions_nick2.csv", row.names = FALSE)
+write.csv(solution, file = "predictions_bayes.csv", row.names = FALSE)
 

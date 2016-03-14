@@ -7,7 +7,7 @@ output: pdf_document
 
 
 #Introduction
-Our team consists of Nick Halliwell, Aina Lopez, and Yaroslav Marchuk. In this competition, we were given both a training and test set consisting of features of various web links from mashable.com. We were asked to predict whether the website link would fall under one of five potential categories: Obscure, Mediocre, Popular, Super Popular and Viral. We ran several algorithms to make these multi-class predictions, and found that a random forest with tuned parameters outperformed all other algorithms. Below we underline the approach we took to this competition. 
+Our team consists of Nick Halliwell, Aina Lopez, and Yaroslav Marchuk. In this competition, we were given both a training and test set consisting of features of various web links from mashable.com. We were asked to predict whether the website link would fall under one of five potential categories: obscure, mediocre, popular, super sopular, and viral. We ran several algorithms to make these multi-class predictions, and found that a random forest with tuned parameters outperformed all other algorithms. Below we underline the approach we took to this competition. 
 
 #Method
 
@@ -34,7 +34,7 @@ We decided to implement a regularized Random Forest, as this algorithm typically
 We implemented a k-NN algorithm, trying both a function written by one of us, and an R package installed from CRAN. In both cases, the k-NN performed poorly. In terms of predictions, it's accuracy was lower than most of the other algorithms, and it was very expensive to compute. We ran the algorithm using the distance metric of the Euclidean norm, and optimzed for different values of k, yet the algorithm could not outperform our Random Forest. 
 
 * **SVM**  
-In addition to k-NN and Random Forest algorithms, we implemented a Support Vector Machine. We optimized weights for the 5 different classes, giving higher weights to classes 1,2 and 3. The svm was outperformed by the Random Forest, and given the large time complexity of the algorithm, we turned to other algorithms to use in competition. 
+In addition to k-NN and Random Forest algorithms, we implemented a Support Vector Machine. We optimized weights for the 5 different classes, giving higher weights to classes 1,2 and 3. The svm was outperformed by the Random Forest, and given the large time complexity of the algorithm, we turned to other methods to use in competition. 
 
 * **Boosting**  
 

@@ -7,7 +7,7 @@ output: pdf_document
 
 
 #Introduction
-Our team consists of Nick Halliwell, Aina Lopez, and Yaroslav Marchuk. In this competition, we were given both a training and test set consisting of features of various web links from mashable.com. We were asked to predict whether the website link would fall under one of five potential categories: Obscure, Mediocre, Popular, Super Popular and Viral. We ran several algorithms to make these multi-class predictions, and found that a random forest with tuned parameters outperformed the others. Below we underline the approach we took to this competition. 
+Our team consists of Nick Halliwell, Aina Lopez, and Yaroslav Marchuk. In this competition, we were given both a training and test set consisting of features of various web links from mashable.com. We were asked to predict whether the website link would fall under one of five potential categories: Obscure, Mediocre, Popular, Super Popular and Viral. We ran several algorithms to make these multi-class predictions, and found that a random forest with tuned parameters outperformed all other algorithms. Below we underline the approach we took to this competition. 
 
 #Method
 
@@ -21,11 +21,7 @@ From the url, we took the year, day and month it was published as well as some k
 **2. Feature Selection**  
 **3. Train the model**  
 **4. Evaluate the model**  
-In order to evaluate our models, we decided to use 5-fold Cross Validation
-
-
-explain 5-fold CV  
-**5. Upload to Kaggle**  
+In order to evaluate our models, we used 5-fold Cross validation. Here, we randomly subset our training data into 5 folds, training the model on 4 folds and testing the model on the last fold. This process is repeated 5 times, with each fold used once for training. To stay consistent, we used 5-fold Cross validation on all algorithms used in competition.  
 
 # Variable Selection: RFF
 
@@ -34,9 +30,12 @@ explain 5-fold CV
 
 # Models 
 
-* **Random Forest**
+* **Random Forest:**  
+We decided to implement a regularized Random Forest, as this algorithm typically perform well on large datasets. Random forests often do not overfitting, however, the computational speed of this algorithm can be slow. The regularized Random Forest performed feature selection for us, and then fed those relevant features into a Random Forest. We optimized the algorithm for the number of trees used, the minimum size of terminal nodes, and the number of variables randomly sampled for potential splits. Ultimately this was our most successful model. 
 
-* **K-nearest neighbors**: We tried using a K-NN algorithm, 
+
+* **K-nearest neighbors:**   
+We implemented a k-NN algorithm, trying both a function written by one of us, and an R package installed from CRAN. In both cases, the k-NN performed poorly. In terms of predictions, it's accuracy was lower compared to the Random Forest, and the k-NN algorithm was very expensive to compute. We ran the algorithm optimizing for different values of k, measuring distance using the Euclidean norm, yet the algorithm could not outperform the Random Forest. 
 
 * **SVM**
 

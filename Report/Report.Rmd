@@ -12,7 +12,7 @@ Our team consists of Nick Halliwell, Aina Lopez, and Yaroslav Marchuk. In this c
 #Method
 
 **1. Create new variables**  
-The first step we took was to examine the data, and determine what kind of variables we could generate from the given data. Of the variables we were given, we decided that the url of the articles included useful information that could be extracted. An example of the url is the following:
+The first step we took was to examine the data, and determine what kind of variables we could generate from the given data, and standardize our features. Of the variables we were given, we decided that the url of the articles included useful information that could be extracted. An example of the url is the following:
 
 **http://mashable.com/2014/01/12/game-of-thrones-season-4-trailer**
 
@@ -23,10 +23,6 @@ From the url, we took the year, day and month it was published as well as some k
 **4. Evaluate the model**  
 In order to evaluate our models, we used 5-fold Cross validation. Here, we randomly subset our training data into 5 folds, training the model on 4 folds and testing the model on the last fold. This process is repeated 5 times, with each fold used once for training. To stay consistent, we used 5-fold Cross validation on all algorithms used in competition.  
 
-# Variable Selection: RFF
-
-
-
 
 # Models 
 
@@ -35,11 +31,12 @@ We decided to implement a regularized Random Forest, as this algorithm typically
 
 
 * **K-nearest neighbors:**   
-We implemented a k-NN algorithm, trying both a function written by one of us, and an R package installed from CRAN. In both cases, the k-NN performed poorly. In terms of predictions, it's accuracy was lower compared to the Random Forest, and the k-NN algorithm was very expensive to compute. We ran the algorithm optimizing for different values of k, measuring distance using the Euclidean norm, yet the algorithm could not outperform the Random Forest. 
+We implemented a k-NN algorithm, trying both a function written by one of us, and an R package installed from CRAN. In both cases, the k-NN performed poorly. In terms of predictions, it's accuracy was lower than most of the other algorithms, and it was very expensive to compute. We ran the algorithm using the distance metric of the Euclidean norm, and optimzed for different values of k, yet the algorithm could not outperform our Random Forest. 
 
-* **SVM**
+* **SVM**  
+In addition to k-NN and Random Forest algorithms, we implemented a Support Vector Machine. We optimized weights for the 5 different classes, giving higher weights to classes 1,2 and 3. The svm was outperformed by the Random Forest, and given the large time complexity of the algorithm, we turned to other algorithms to use in competition. 
 
-* **Boosting**
+* **Boosting**  
 
 
 # Results

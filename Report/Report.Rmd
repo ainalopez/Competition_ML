@@ -9,6 +9,7 @@ output: pdf_document
 #Introduction
 Our team consists of Nick Halliwell, Aina Lopez, and Yaroslav Marchuk. In this competition, we were given both a training and test set consisting of features of various web links from mashable.com. We were asked to predict whether the website link would fall under one of five potential categories: obscure, mediocre, popular, super sopular, and viral. We ran several algorithms to make these multi-class predictions, and found that a random forest with tuned parameters outperformed all other algorithms. Below we underline the approach we took to this competition. 
 
+
 #Method
 
 **1. Create new variables**  
@@ -22,7 +23,7 @@ From the url, we took the year, day and month it was published as well as some k
 We used Regularized Random Forest (RRF package) to choose the best feature set. 
 
 **3. Train the model**  
-We tried different models, explained in detail below.
+We trained different models optimizing their parameters -explained in more detail below-.
 
 **4. Evaluate the model**  
 In order to evaluate our models, we used 5-fold Cross validation. Here, we randomly subset our training data into 5 folds, training the model on 4 folds and testing the model on the last fold. This process is repeated 5 times, with each fold used once for training. To stay consistent, we used 5-fold Cross validation on all algorithms used in competition.  
@@ -38,10 +39,11 @@ We decided to implement a regularized Random Forest, as this algorithm typically
 We implemented a k-NN algorithm, trying both a function written by one of us, and an R package installed from CRAN. In both cases, the k-NN performed poorly. In terms of predictions, it's accuracy was lower than most of the other algorithms, and it was very expensive to compute. We ran the algorithm using the distance metric of the Euclidean norm, and optimzed for different values of k, yet the algorithm could not outperform our Random Forest. 
 
 * **SVM**  
-In addition to k-NN and Random Forest algorithms, we implemented a Support Vector Machine. We optimized weights for the 5 different classes, giving higher weights to classes 1,2 and 3. The svm was outperformed by the Random Forest, and given the large time complexity of the algorithm, we turned to other methods to use in competition. 
+In addition to k-NN and Random Forest algorithms, we implemented a Support Vector Machine using a polynomial kernel. We optimized weights for the 5 different classes, giving higher weights to classes 1,2 and 3. The svm was outperformed by the Random Forest, and given the large time complexity of the algorithm, we turned to other methods to use in competition. 
 
 * **Boosting**  
-
+Finally, we also tried boosting methods. First of all, we tried gradient Boosting (XGBoost). However, the amount of parameters to optimize was very great and we did not observed important changes while changing them. The accuracy did not outperformed Random Forest and we decided to discard it.  
+Secondly, we tried Generalized Boosted Regression Modeling (gbm) using h2o to speed up computations. In this case, we selected variables in a different way, using the variance importance attribute of gbm. The results were good and very similar to random forest.
 
 
 # Choosing Parameters
@@ -58,12 +60,12 @@ Usually, only a couple of rounds of this approach are needed. However, with more
 
 We have plot some of the model accuracies (Kaggle public Leaderboard vs our 5-fold Cross Validation). The models that we are displaying are:
 
-* RF: all is the random forest with all the variables, var1 states for the random forest with the variables found using the previously described variable selection method and var2 is the random forest with a different variable selection method (using different parameters in RRF).
-* GBM: boosting using the package GBM.
-* XGBoost: boosting using the package XGBoost.
-* KNN.
-* SVM.
-* Decision Tree.
+* RF: is the random forest. var1 and var 2 states for a couple of feature sets selected via RFF using different parameters. 
+* GBM
+* XGBoost
+* KNN
+* SVM
+* Decision Tree
 
 Those are a small sample of all the models that we have tried, but represent the best accuracies achieved by each algortihm family. Notice that most of the time we have tried to optimize Random Forest results, because is the one with better performance. 
 
@@ -76,8 +78,8 @@ library(ggplot2)
 
 ```{r,echo = FALSE}
 
-Method <- c("RF: all","RF: var1 (800 trees)","RF: var1 (1000 trees)","RF: var2 (500 trees)","RF: var2 (1200 trees)", "XGBoost",  "Decision Tree", "GBM", "KNN", "SVM" )
-CV     <- c(0.5156653, 0.519882, 0.5206152, 0.52125, 0.5217,  0.51909,  0.4635335, 0, 0, 0)
+Method <- c("RF: all variables","RF: var1 (800 trees)","RF: var1 (1000 trees)","RF: var2 (500 trees)","RF: var2 (1200 trees)", "XGBoost",  "Decision Tree", "GBM", "KNN", "SVM" )
+CV     <- c(0.5156653, 0.519882, 0.5206152, 0.52125, 0.5217,  0.51909,  0.4635335, 0.521518, 0.48652, 0.51743)
 Kaggle <- c(0.53416, 0.55590, 0.55124, 0.54814, 0.53727, 0.53416, 0.48292, 0.54969, 0.49689, 0.53882)
 
 
@@ -95,15 +97,34 @@ ggplot(df, aes(x = CV, y = Kaggle, color = Method)) +
 ```
 
 
+# Conclusions and Classifier
 
-# Conclusions
-Sadly, we haven't had time to implement all of our ideas (supersampling, optimizing the seed, choose the Boosting and SVM parameters more carefully). 
+As we can see in the previous figure, the best accuracy in Kaggle's public Leaderboard is not necessarily the same as the best accuracy in our 5-fold CV. For our final submission, we decided to choose the two models with best balance of scores in Kaggle and in our CV. Those models were:_____.  
+
+Since we have unbalanced data, we have observed the confusion matrices. Most of the models were able to classify with good accuracy classes 1 and 2, but classes 3, 4 and 5 were very difficult to predict. For our models, the connfusion matrices are (vertical is actual and accross is predicted):
+
+* GBM:
+
+.  | 1   | 2     | 3   | 4   | 5 | Error
+--|------|-------|-----|-----|---|------
+1 | 5418 | 3942  | 118 | 0   |0  | 0.4284
+2 | 2502 | 11061 | 201 | 0   | 0 | 0.1964
+3 | 822  | 3944  | 946 | 0   |0  | 0.8344
+4 | 129  | 681   | 86  | 103 |0  | 0.8969
+5 | 3    | 26    | 5   | 0   |13 | 0.7234
 
 
-As we can see in the figure, the best accuracy in Kaggle's public Leaderboard is not necessarily the same as the best accuracy in our 5-fold CV. For our final submission, we decided to choose the ones with best scores both in CV and in public Leaderboard. 
+* Random Forest:
 
-which one we choose?
 
-Advantages and limitations of our classifier
 
+
+
+* DISCUSS Advantages and limitations of our classifier
+
+
+
+Additionally, we have performed all the cross validations with the same seed, but  
+
+Sadly, we haven't had time to implement all of our ideas (supersampling, optimizing the seed, choose Boosting and SVM parameters more carefully, ...). 
 

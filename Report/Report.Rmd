@@ -19,7 +19,11 @@ The first step we took was to examine the data, and determine what kind of varia
 From the url, we took the year, day and month it was published as well as some keywords of the content of the article. Using text mining techniques, we collected all the keywords of the article titles. With this we created new variables indicating whether a specific word appears in the title of the article. Given that we have many keywords, we created a threshold for variables, meaning we created variables only for keywords that have appeared in at least 150 observations.
 
 **2. Feature Selection**  
+We used Regularized Random Forest (RRF package) to choose the best feature set. 
+
 **3. Train the model**  
+We tried different models, explained in detail below.
+
 **4. Evaluate the model**  
 In order to evaluate our models, we used 5-fold Cross validation. Here, we randomly subset our training data into 5 folds, training the model on 4 folds and testing the model on the last fold. This process is repeated 5 times, with each fold used once for training. To stay consistent, we used 5-fold Cross validation on all algorithms used in competition.  
 
@@ -39,6 +43,67 @@ In addition to k-NN and Random Forest algorithms, we implemented a Support Vecto
 * **Boosting**  
 
 
+
+# Choosing Parameters
+
+In order to optimize the parameters of each algortihm, our approach was to create a wide range of reasonable values, very spaced between them. After, we cross-validated all the models and choose the best. Then, we created a new range of values arround the best found value, but this time less spaced. We cross-validated again and choose the best. And so on.
+
+We repeated this procedure as many times as needed.  
+
+Usually, only a couple of rounds of this approach are needed. However, with more complex models we realized that it is very inefficient. We saw that choosing each parameter separetely is not enough, the way of really optimize the parameters is to pick them together. This is one of the main reasons why we decided to don't use Support Vector Machines. 
+
+
+
 # Results
 
-(plot ? ) Kaggle score vs CV score
+We have plot some of the model accuracies (Kaggle public Leaderboard vs our 5-fold Cross Validation). The models that we are displaying are:
+
+* RF: all is the random forest with all the variables, var1 states for the random forest with the variables found using the previously described variable selection method and var2 is the random forest with a different variable selection method (using different parameters in RRF).
+* GBM: boosting using the package GBM.
+* XGBoost: boosting using the package XGBoost.
+* KNN.
+* SVM.
+* Decision Tree.
+
+Those are a small sample of all the models that we have tried, but represent the best accuracies achieved by each algortihm family. Notice that most of the time we have tried to optimize Random Forest results, because is the one with better performance. 
+
+
+```{r, echo = FALSE, include = FALSE}
+
+library(ggplot2)
+
+```
+
+```{r,echo = FALSE}
+
+Method <- c("RF: all","RF: var1 (800 trees)","RF: var1 (1000 trees)","RF: var2 (500 trees)","RF: var2 (1200 trees)", "XGBoost",  "Decision Tree", "GBM", "KNN", "SVM" )
+CV     <- c(0.5156653, 0.519882, 0.5206152, 0.52125, 0.5217,  0.51909,  0.4635335, 0, 0, 0)
+Kaggle <- c(0.53416, 0.55590, 0.55124, 0.54814, 0.53727, 0.53416, 0.48292, 0.54969, 0.49689, 0.53882)
+
+
+df <- data.frame(Method= Method, CV = CV, Kaggle = Kaggle)
+
+
+ggplot(df, aes(x = CV, y = Kaggle, color = Method)) + 
+  geom_point() +
+  ggtitle("Results")  + 
+  xlab("5-Fold Cross Validation") + 
+  ylab(" Kaggle's Public Leaderboard") + 
+  theme_bw()
+
+
+```
+
+
+
+# Conclusions
+Sadly, we haven't had time to implement all of our ideas (supersampling, optimizing the seed, choose the Boosting and SVM parameters more carefully). 
+
+
+As we can see in the figure, the best accuracy in Kaggle's public Leaderboard is not necessarily the same as the best accuracy in our 5-fold CV. For our final submission, we decided to choose the ones with best scores both in CV and in public Leaderboard. 
+
+which one we choose?
+
+Advantages and limitations of our classifier
+
+

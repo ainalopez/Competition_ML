@@ -23,7 +23,7 @@ From the url, we took the year, day and month it was published as well as some k
 We used Regularized Random Forest (RRF package) to choose the best feature set. 
 
 **3. Train the model**  
-We trained different models optimizing their parameters -explained in more detail below-.
+We trained different models optimizing their parameters, explained in more detail below.
 
 **4. Evaluate the model**  
 In order to evaluate our models, we used 5-fold Cross validation. Here, we randomly subset our training data into 5 folds, training the model on 4 folds and testing the model on the last fold. This process is repeated 5 times, with each fold used once for training. To stay consistent, we used 5-fold Cross validation on all algorithms used in competition.  
@@ -39,35 +39,33 @@ We decided to implement a regularized Random Forest, as this algorithm typically
 We implemented a k-NN algorithm, trying both a function written by one of us, and an R package installed from CRAN. In both cases, the k-NN performed poorly. In terms of predictions, it's accuracy was lower than most of the other algorithms, and it was very expensive to compute. We ran the algorithm using the distance metric of the Euclidean norm, and optimzed for different values of k, yet the algorithm could not outperform our Random Forest. 
 
 * **SVM**  
-In addition to k-NN and Random Forest algorithms, we implemented a Support Vector Machine using a polynomial kernel. We optimized weights for the 5 different classes, giving higher weights to classes 1,2 and 3. The svm was outperformed by the Random Forest, and given the large time complexity of the algorithm, we turned to other methods to use in competition. 
+In addition to k-NN and Random Forest algorithms, we implemented a Support Vector Machine using a polynomial kernel. We optimized weights for the 5 different classes, giving higher weights to classes 4 and 5. The svm was outperformed by the Random Forest, and given the large time complexity of the algorithm, we turned to other methods to use in competition. 
 
 * **Boosting**  
-Finally, we also tried boosting methods. First of all, we tried gradient Boosting (XGBoost). However, the amount of parameters to optimize was very great and we did not observed important changes while changing them. The accuracy did not outperformed Random Forest and we decided to discard it.  
-Secondly, we tried Generalized Boosted Regression Modeling (gbm) using h2o to speed up computations. In this case, we selected variables in a different way, using the variance importance attribute of gbm. The results were good and very similar to random forest.
+Lastly, we tried boosting methods. Initially, we tried gradient Boosting (XGBoost), however, the amount of parameters to optimize was very large and did not observed important changes while tuning them. The accuracy did not outperformed Random Forest hence we decided to discard it.  
+We also tried Generalized Boosted Regression Modeling (gbm) using h2o to speed up computations. In this case, we selected variables in a different way, using the variance importance attribute of gbm. The results were good and very similar to random forest.
 
 
 # Choosing Parameters
 
-In order to optimize the parameters of each algortihm, our approach was to create a wide range of reasonable values, very spaced between them. After, we cross-validated all the models and choose the best. Then, we created a new range of values arround the best found value, but this time less spaced. We cross-validated again and choose the best. And so on.
+In order to optimize the parameters of each algortihm, our approach was to create a wide range of reasonable values, with large gaps between them. We then cross-validated all the models and chose the best. In addition, we created a new range of values arround the optimal value found, but with less spaced intervals. We cross-validated again and choose the optimal value. We repeated this procedure as many times as needed.  
 
-We repeated this procedure as many times as needed.  
-
-Usually, only a couple of rounds of this approach are needed. However, with more complex models we realized that it is very inefficient. We saw that choosing each parameter separetely is not enough, the way of really optimize the parameters is to pick them together. This is one of the main reasons why we decided to don't use Support Vector Machines. 
+On average, only a couple of rounds of this method were needed. However, with more complex models, this method became very inefficient. We observed that selecting each parameter separetely is not enough. Instead in order to optimize the parameters, we had to select them together. This is one of the main reasons why we decided against use Support Vector Machines. 
 
 
 
 # Results
 
-We have plot some of the model accuracies (Kaggle public Leaderboard vs our 5-fold Cross Validation). The models that we are displaying are:
+We have plot some of the model accuracies (Kaggle public Leaderboard vs our 5-fold Cross Validation). The models that we are displaying are listed below:
 
-* RF: is the random forest. var1 and var 2 states for a couple of feature sets selected via RFF using different parameters. 
+* RF: is the random forest. var1 and var 2 use different feature sets selected via RFF using different parameters. 
 * GBM
 * XGBoost
 * KNN
 * SVM
 * Decision Tree
 
-Those are a small sample of all the models that we have tried, but represent the best accuracies achieved by each algortihm family. Notice that most of the time we have tried to optimize Random Forest results, because is the one with better performance. 
+Plotted below are a small sample of all the models that we implemented, but represent the best accuracies achieved by each algortihm family. Notice that, on average, we have tried to optimize Random Forest results, because this algorithm performed the best.   
 
 
 ```{r, echo = FALSE, include = FALSE}

@@ -18,6 +18,7 @@
 #' @examples
 #' #Run random forest
 #' bestABBABA.RF(training, test)
+#' bestABBABA.GBM(training, test)
 
 
 bestABBABA.RF <- function(data, test, file = FALSE, seed=111){

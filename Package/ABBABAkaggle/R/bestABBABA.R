@@ -1,9 +1,9 @@
 # ----------------------------------------------------------------------
-# Random Forest Classifier / GBM Classifier
+# Random Forest Classifier 
 # ----------------------------------------------------------------------
-#' Random Forest classifier  / GBM Classifier
+#' Random Forest classifier  
 #' 
-#' multi-class classifier that predicts the labels for the test data set using  random forest or gradient boosting. . 
+#' multi-class classifier that predicts the labels for the test data set using a random forest. 
 #'
 #' @param data Matrix or data frame consisting of the training data, where the labels are included in the matrix/data frame
 #' @param test Matrix or data frame consisting of the test data. 
@@ -18,7 +18,7 @@
 #' @examples
 #' #Run random forest
 #' bestABBABA.RF(training, test)
-#' bestABBABA.GBM(training, test)
+
 
 
 bestABBABA.RF <- function(data, test, file = FALSE, seed=111){
@@ -132,7 +132,33 @@ bestABBABA.RF <- function(data, test, file = FALSE, seed=111){
 
 
 
-# GBM 
+
+
+
+
+# ----------------------------------------------------------------------
+#  GBM Classifier
+# ----------------------------------------------------------------------
+#' GBM Classifier
+#' 
+#' multi-class classifier that predicts the labels for the test data set using gradient boosting. . 
+#'
+#' @param data Matrix or data frame consisting of the training data, where the labels are included in the matrix/data frame
+#' @param test Matrix or data frame consisting of the test data. 
+#' @param file Logical, set to TRUE if you want to create a csv file with the Id's and corresponding predicted classes, by deafult set to FALSE.
+#' @param seed Integer, set to 111 by default. 
+#' @return A dataframe with following elements: Id, predicted class.
+#' @import assertthat 
+#' @import tm 
+#' @import randomForest 
+#' @import h2o
+#' @export
+#' @examples
+#' #Run GBM
+#' bestABBABA.GBM(training, test)
+
+
+
 
 
 bestABBABA.GBM <- function(data, test, file = FALSE, seed=111){

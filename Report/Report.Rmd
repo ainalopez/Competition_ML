@@ -7,13 +7,13 @@ output: pdf_document
 
 
 #Introduction
-Our team consists of Nick Halliwell, Aina Lopez, and Yaroslav Marchuk. In this competition, we were given both a training and test set consisting of features of various web links from mashable.com. We were asked to predict whether the website link would fall under one of five potential categories: obscure, mediocre, popular, super sopular, and viral. We ran several algorithms to make these multi-class predictions, and found that a random forest with tuned parameters outperformed all other algorithms. Below we underline the approach we took to this competition. 
+Our team consists of Nick Halliwell, Aina Lopez, and Yaroslav Marchuk. In this competition, we were given both a training and test set consisting of features of various web links from mashable.com. We were asked to predict whether the website link would fall under one of five potential categories: obscure, mediocre, popular, super sopular, and viral. We ran several algorithms to make these multi-class predictions. Below we underline the approach we took to this competition. 
 
 
 #Method
 
 **1. Create new variables**  
-The first step we took was to examine the data, and determine what kind of variables we could generate from the given data, and standardize our features. Of the variables we were given, we decided that the url of the articles included useful information that could be extracted. An example of the url is the following:
+The first step we took was to examine the data, and determine what kind of variables we could generate from the given data. We also standardized our features. Of the variables we were given, we decided that the url of the articles included useful information that could be extracted. An example of the url is the following:
 
 **http://mashable.com/2014/01/12/game-of-thrones-season-4-trailer**
 
@@ -23,7 +23,7 @@ From the url, we took the year, day and month it was published as well as some k
 We used Regularized Random Forest (RRF package) to choose the best feature set. 
 
 **3. Train the model**  
-We trained different models optimizing their parameters -explained in more detail below-.
+We trained different models optimizing their parameters explained in more detail below.
 
 **4. Evaluate the model**  
 In order to evaluate our models, we used 5-fold Cross validation. Here, we randomly subset our training data into 5 folds, training the model on 4 folds and testing the model on the last fold. This process is repeated 5 times, with each fold used once for training. To stay consistent, we used 5-fold Cross validation on all algorithms used in competition.  
@@ -32,27 +32,24 @@ In order to evaluate our models, we used 5-fold Cross validation. Here, we rando
 # Models 
 
 * **Random Forest:**  
-We decided to implement a regularized Random Forest, as this algorithm typically perform well on large datasets. Random forests often do not overfitting, however, the computational speed of this algorithm can be slow. The regularized Random Forest performed feature selection for us, and then fed those relevant features into a Random Forest. We optimized the algorithm for the number of trees used, the minimum size of terminal nodes, and the number of variables randomly sampled for potential splits. Ultimately this was our most successful model. 
+We decided to implement a regularized Random Forest, as this algorithm typically perform well on large datasets. Random forests often do not overfit, however, the computational speed of this algorithm can be slow. The regularized Random Forest performed feature selection for us, and we fed those relevant features into a Random Forest. We optimized the algorithm for the number of trees used, the minimum size of terminal nodes, and the number of variables randomly sampled for potential splits. Ultimately this was one of our most successful model. 
 
 
 * **K-nearest neighbors:**   
-We implemented a k-NN algorithm, trying both a function written by one of us, and an R package installed from CRAN. In both cases, the k-NN performed poorly. In terms of predictions, it's accuracy was lower than most of the other algorithms, and it was very expensive to compute. We ran the algorithm using the distance metric of the Euclidean norm, and optimzed for different values of k, yet the algorithm could not outperform our Random Forest. 
+We also implemented a k-NN algorithm, trying both a function written by one of us, and an R package installed from CRAN. In both cases, the k-NN performed poorly. In terms of predictions, it's accuracy was lower than most of the other algorithms, and it was very expensive to compute. We ran the algorithm using the distance metric of the Euclidean norm, and optimized for different values of k, yet the algorithm could not outperform our Random Forest. 
 
 * **SVM**  
-In addition to k-NN and Random Forest algorithms, we implemented a Support Vector Machine using a polynomial kernel. We optimized weights for the 5 different classes, giving higher weights to classes 1,2 and 3. The svm was outperformed by the Random Forest, and given the large time complexity of the algorithm, we turned to other methods to use in competition. 
+In addition to k-NN and Random Forest algorithms, we implemented a Support Vector Machine using a polynomial kernel. We optimized weights for the 5 different classes, giving higher weights to classes 4 and 5. The svm was outperformed by the Random Forest, and given the time complexity of the algorithm, we turned to other methods to use in competition. 
 
 * **Boosting**  
-Finally, we also tried boosting methods. First of all, we tried gradient Boosting (XGBoost). However, the amount of parameters to optimize was very great and we did not observed important changes while changing them. The accuracy did not outperformed Random Forest and we decided to discard it.  
-Secondly, we tried Generalized Boosted Regression Modeling (gbm) using h2o to speed up computations. In this case, we selected variables in a different way, using the variance importance attribute of gbm. The results were good and very similar to random forest.
+Finally, we tried boosting methods, gradient Boosting (XGBoost) more specifically. However, there were too many parameters to optimize and we did not observed significant changes during optimization. The accuracy did not outperformed Random Forest, hence discarding it. In addition, we implemented Generalized Boosted Regression Modeling (gbm) model, using h2o to speed up computations. In this case, we selected variables in a different way, using the variance importance attribute of gbm. The results were impressive, and very similar to random forest.
 
 
 # Choosing Parameters
 
-In order to optimize the parameters of each algortihm, our approach was to create a wide range of reasonable values, very spaced between them. After, we cross-validated all the models and choose the best. Then, we created a new range of values arround the best found value, but this time less spaced. We cross-validated again and choose the best. And so on.
+In order to optimize the parameters of each algortihm, our approach was to create a wide range of possible values, with large intervals between each value. We then cross-validated all the models and chose the best. We then created a new range of values around the optimal value found, and used a smaller interval. We cross-validated again, and chose the optimal value. We repeated this procedure as many times as needed, shrinking the interval on each repetition.   
 
-We repeated this procedure as many times as needed.  
-
-Usually, only a couple of rounds of this approach are needed. However, with more complex models we realized that it is very inefficient. We saw that choosing each parameter separetely is not enough, the way of really optimize the parameters is to pick them together. This is one of the main reasons why we decided to don't use Support Vector Machines. 
+We found that only a few iterations were necessary. With more complex models however, this method became inefficient. We saw that choosing each parameter separetely is not practical, and that optimizing parameters is best done selecting them together. This is why we decided against using Support Vector Machines. 
 
 
 
@@ -67,7 +64,7 @@ We have plot some of the model accuracies (Kaggle public Leaderboard vs our 5-fo
 * SVM
 * Decision Tree
 
-Those are a small sample of all the models that we have tried, but represent the best accuracies achieved by each algortihm family. Notice that most of the time we have tried to optimize Random Forest results, because is the one with better performance. 
+Those are a small sample of all the models that we have tried, but represent the best accuracies achieved by each algortihm family.   
 
 
 ```{r, echo = FALSE, include = FALSE}
@@ -99,11 +96,11 @@ ggplot(df, aes(x = CV, y = Kaggle, color = Method)) +
 
 # Conclusions and Classifier
 
-As we can see in the previous figure, the best accuracy in Kaggle's public Leaderboard is not necessarily the same as the best accuracy in our 5-fold CV. Since Kaggle's public leaderboard is just showing a 7% of the test data, we decided to trust more ore cross-validation results.  
+As we can see in the above figure, the accuracy displayed in Kaggle's public Leaderboard was not equal to the best accuracy in our 5-fold CV. Since Kaggle's public leaderboard is just showing a 7% of the test data, we decided to rely on our cross-validation results for model comparison.  
 
 For our final submission, we decided to choose the two models with best balance between their scores in Kaggle and in our Cross-Validation. Those models were: *GBM* and *RF: var 1 (1000 trees)*.  
 
-Since we have unbalanced data, confusion matrices of our models have been a very powerful tool to evaluate our models more carefully. We observed that most of the models were unable to classify classes 3, 4 and 5 were very difficult to predict. However, *GBM* had better prediction accuracy with those classes. 
+Since we have unbalanced data, confusion matrices of our models have been a very powerful tool for evaluation. We observed that most of the models struggled to predict classes three, four, and five. However, *GBM* had better prediction accuracy with the minority classes. 
 
 * GBM confusion matrix:
 
@@ -127,11 +124,12 @@ Since we have unbalanced data, confusion matrices of our models have been a very
 5 | 2    | 35    | 10  | 0   |0  | 1.0000000
 
 
-This better accuracy in predicting weird classes is one of the main strengths of our gbm classifier. Also, the fact that we use h2o is a plus, because computations become faster. On the other hand, the error when predicting classes 3, 4 and 5 is pretty high. 
+This increased accuracy in underrepresented samples is one of the biggest strengths of our gbm classifier.This classifier was implemented in h20 in order to increase computational speed. Regardless of what classifier we used, the error when predicting classes three, four, and five were higher than the other two. 
 
-The other model that we decided to use is Random Forest, this one, compared with other random forest, has achieved some of the best results both in Kaggle and in our Cross-Validation. If we compare its confusion matrix with gbm's confusion matrix we can see that his predictions for all classes are worse. Additionally, training this model is quite slow.   
+The second model that we decided to use is Random Forest. We chose this one in particular as it achieved some of the best results both in Kaggle and in our Cross-Validation. Comparing its confusion matrix with the gbm model, we can see that its predictions for all classes are worse. Additionally, training this model was quite slow.   
 
-Sadly, we haven't had time to implement all of our ideas (supersampling, optimizing the seed, choose Boosting and SVM parameters more carefully, ...).  Additionally, we have performed all the cross validations with the same seed, this should not be a problem but to be more sure about what model to choose, it would have helped us to have more robust results to base our decision. 
+Unfortunately, we didn't had time or computational power to implement all of our ideas (supersampling, optimizing the seed, etc). However, we are confident in how our models will perform. 
+
 
 
 

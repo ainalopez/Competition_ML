@@ -99,11 +99,13 @@ ggplot(df, aes(x = CV, y = Kaggle, color = Method)) +
 
 # Conclusions and Classifier
 
-As we can see in the previous figure, the best accuracy in Kaggle's public Leaderboard is not necessarily the same as the best accuracy in our 5-fold CV. For our final submission, we decided to choose the two models with best balance of scores in Kaggle and in our CV. Those models were:_____.  
+As we can see in the previous figure, the best accuracy in Kaggle's public Leaderboard is not necessarily the same as the best accuracy in our 5-fold CV. Since Kaggle's public leaderboard is just showing a 7% of the test data, we decided to trust more ore cross-validation results.  
 
-Since we have unbalanced data, we have observed the confusion matrices. Most of the models were able to classify with good accuracy classes 1 and 2, but classes 3, 4 and 5 were very difficult to predict. For our models, the connfusion matrices are (vertical is actual and accross is predicted):
+For our final submission, we decided to choose the two models with best balance between their scores in Kaggle and in our Cross-Validation. Those models were: *GBM* and *RF: var 1 (1000 trees)*.  
 
-* GBM:
+Since we have unbalanced data, confusion matrices of our models have been a very powerful tool to evaluate our models more carefully. We observed that most of the models were unable to classify classes 3, 4 and 5 were very difficult to predict. However, *GBM* had better prediction accuracy with those classes. 
+
+* GBM confusion matrix:
 
 .  | 1   | 2     | 3   | 4   | 5 | Error
 --|------|-------|-----|-----|---|------
@@ -114,7 +116,7 @@ Since we have unbalanced data, we have observed the confusion matrices. Most of 
 5 | 3    | 26    | 5   | 0   |13 | 0.7234
 
 
-* Random Forest:
+* Random Forest (var 1 and 1000 trees) confusion matrix:
 
 .  | 1   | 2     | 3   | 4   | 5 | Error
 --|------|-------|-----|-----|---|------
@@ -125,13 +127,11 @@ Since we have unbalanced data, we have observed the confusion matrices. Most of 
 5 | 2    | 35    | 10  | 0   |0  | 1.0000000
 
 
+This better accuracy in predicting weird classes is one of the main strengths of our gbm classifier. Also, the fact that we use h2o is a plus, because computations become faster. On the other hand, the error when predicting classes 3, 4 and 5 is pretty high. 
+
+The other model that we decided to use is Random Forest, this one, compared with other random forest, has achieved some of the best results both in Kaggle and in our Cross-Validation. If we compare its confusion matrix with gbm's confusion matrix we can see that his predictions for all classes are worse. Additionally, training this model is quite slow.   
+
+Sadly, we haven't had time to implement all of our ideas (supersampling, optimizing the seed, choose Boosting and SVM parameters more carefully, ...).  Additionally, we have performed all the cross validations with the same seed, this should not be a problem but to be more sure about what model to choose, it would have helped us to have more robust results to base our decision. 
 
 
-* DISCUSS Advantages and limitations of our classifier
-
-
-
-Additionally, we have performed all the cross validations with the same seed, but  
-
-Sadly, we haven't had time to implement all of our ideas (supersampling, optimizing the seed, choose Boosting and SVM parameters more carefully, ...). 
 

@@ -1,5 +1,13 @@
 # ----------------------------------------------------------------------
 # Random Forest Classifier 
+
+  # Load libraries
+  if (!require("assertthat")) install.packages("assertthat"); library(assertthat)
+  if (!require("tm")) install.packages("tm"); library(tm)
+  if (!require("randomForest")) install.packages("randomForest"); library(randomForest)
+
+
+
 # ----------------------------------------------------------------------
 #' Random Forest classifier  
 #' 
